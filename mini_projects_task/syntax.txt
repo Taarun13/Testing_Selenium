@@ -1,0 +1,203 @@
+1. Get Attribute:
+element.get_attribute("attribute_name")
+# Example:
+src = logo.get_attribute("src")
+
+2. Action Class (Mouse Hover, Drag and Drop):
+from selenium.webdriver.common.action_chains import ActionChains
+actions = ActionChains(driver)
+actions.move_to_element(element).perform()
+# Example: actions.drag_and_drop(source, target).perform()
+
+3. Debugging (Manual or With Breakpoints):
+print("Debug Step A")
+# Optional interactive debugger:
+import pdb; pdb.set_trace()
+
+4. Alert Handling:
+alert = driver.switch_to.alert
+print(alert.text)
+alert.accept()       # Confirm OK
+alert.dismiss()      # Click Cancel
+alert.send_keys("text")  # Only for prompt alerts
+
+5. Take Screenshot:
+driver.save_screenshot("screenshot_name.png")
+# Example:
+driver.save_screenshot("error_popup.png")
+
+6. Script Executor (Scroll/Click):
+driver.execute_script("JavaScript code here")
+# Scroll Example:
+driver.execute_script("window.scrollBy(0, 500);")
+# Click with JS:
+driver.execute_script("arguments[0].click();", element)
+
+7. Frame Handling:
+driver.switch_to.frame("frame_name_or_id")
+# OR by index:
+driver.switch_to.frame(0)
+# To return to main content:
+driver.switch_to.default_content()
+
+8.Window/Tab Handling:
+windows = driver.window_handles
+driver.switch_to.window(windows[1])  # Switch to new tab
+driver.close()                        # Close current tab
+driver.switch_to.window(windows[0])  # Return to original tab
+
+9. Select Class for Dropdown:
+from selenium.webdriver.support.ui import Select
+dropdown = Select(driver.find_element(By.ID, "dropdown_id"))
+dropdown.select_by_visible_text("Option Text")
+dropdown.select_by_value("value")
+dropdown.select_by_index(0)
+# Get all options:
+for option in dropdown.options:
+    print(option.text)
+
+10.Explicit Wait:
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+wait = WebDriverWait(driver, 10)
+element = wait.until(EC.presence_of_element_located((By.ID, "element_id")))
+# You can replace with EC.element_to_be_clickable or EC.visibility_of_element_located
+
+-------------------------------------------------------------------------------------------------------
+
+________________________________________________________________________________________________________
+Selenium Syntax Reference:
+________________________________________________________________________________________________________
+
+# 1. Open a website
+driver.get("https://example.com")
+
+# 2. Log in a website
+driver.find_element(By.ID, "username").send_keys("your_username")
+driver.find_element(By.ID, "password").send_keys("your_password")
+driver.find_element(By.ID, "login").click()
+
+# 3. Refresh a website
+driver.refresh()
+
+# 4. Navigation
+# Open another page
+driver.get("https://example.com/page2")
+# Back and forward
+driver.back()
+driver.forward()
+
+# Tab switching
+windows = driver.window_handles
+driver.switch_to.window(windows[1])
+driver.switch_to.window(windows[0])
+
+# 5. Handling checkbox
+driver.find_element(By.ID, "checkbox1").click()
+
+# 6. Handling dropdowns
+from selenium.webdriver.support.ui import Select
+dropdown = Select(driver.find_element(By.ID, "dropdown_id"))
+dropdown.select_by_visible_text("Option 1")
+
+# 7. Finding broken images
+import requests
+imgs = driver.find_elements(By.TAG_NAME, "img")
+for img in imgs:
+    src = img.get_attribute("src")
+    if requests.get(src).status_code != 200:
+        print("Broken:", src)
+
+# 8. Use of explicit wait
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+wait = WebDriverWait(driver, 10)
+element = wait.until(EC.presence_of_element_located((By.ID, "some_id")))
+
+# 9. Send Excel data without Keys (via script input)
+search = driver.execute_script("document.getElementById('search').value='Data from Excel'")
+
+# 10. Read Excel using openpyxl
+import openpyxl
+wb = openpyxl.load_workbook("data.xlsx")
+sheet = wb.active
+for row in sheet.iter_rows(min_row=2, values_only=True):
+    print(row[0], row[1])
+
+# 11. Cross browsing
+# Use WebDriver for Chrome, Firefox, etc.
+from selenium import webdriver
+browser = webdriver.Chrome()  # or webdriver.Firefox(), Edge()
+
+# 12. Screenshots
+driver.save_screenshot("screenshot.png")
+
+# 13. HTML Report (using pytest-html)
+# pytest --html=report.html
+
+# 14. Logging
+import logging
+logging.basicConfig(filename="test.log", level=logging.INFO)
+logging.info("Test started")
+
+# 15. Handle alert
+alert = driver.switch_to.alert
+print(alert.text)
+alert.accept()
+
+# 16. Search and generate HTML report
+# Combine Selenium + BeautifulSoup + File Write
+
+# 17. Locators
+By.ID
+By.XPATH
+By.NAME
+By.CLASS_NAME
+By.TAG_NAME
+By.LINK_TEXT
+By.PARTIAL_LINK_TEXT
+By.CSS_SELECTOR
+
+# 18. Tools to find XPath
+# SelectorsHub, ChroPath, DevTools > Inspect Element > Copy XPath
+
+# 19. Testing Theories
+# Write in Markdown or docx — not applicable in code syntax
+
+# 20. Robot Framework Syntax
+# *** Test Cases ***
+# Open Browser    https://example.com    chrome
+
+# 21. Frame handling
+driver.switch_to.frame("frame_id")
+driver.switch_to.default_content()
+
+# 22. Window Handling
+handles = driver.window_handles
+driver.switch_to.window(handles[1])
+
+# 23. Assertion
+assert "Expected" in driver.title
+
+# 24. Radio Button
+driver.find_element(By.ID, "radio1").click()
+
+# 25. If conditions
+if driver.find_element(By.ID, "element").is_displayed():
+    print("Visible")
+
+# 26. Debug (try/except)
+try:
+    driver.find_element(By.ID, "search").click()
+except Exception as e:
+    print("Error:", e)
+
+# 27. Select Class
+# Already shown in #6
+
+# 28. JS Executor - Scroll
+# Scroll down
+driver.execute_script("window.scrollBy(0,500);")
+# Scroll up
+driver.execute_script("window.scrollTo(0,0);")
+
